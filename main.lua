@@ -1,10 +1,16 @@
 
+-- Configuration and constants
 local config = require "config.config"
+
+-- Game objects
 local player = require "src.player"
 local lanes = require "src.lanes"
-local avgJoe = require "src.npcs.avgJoe"
+
+-- Game state management
 local collisionManager = require "src.controllers.collisionManager"
 
+-- TEMP NPCs - remove when spawner is implemented
+local avgJoe = require "src.npcs.avgJoe"
 
 function love.load()
     ScreenWidth, ScreenHeight = config.ScreenWidth, config.ScreenHeight

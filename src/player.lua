@@ -10,7 +10,7 @@ function Player:new(o)
     -- defaults
     o.width = o.width or 32
     o.height = o.height or 64
-    o.x = o.x or o.width * 2
+    o.x = o.x or o.width * 4
     o.y = o.y or ScreenHeight/2 - o.height/2 - 15 
     o.color = o.color or {1, 1, 1}
     o.lane = 0 -- binary lane system, 0 is the top lane, 1 is the bottom lane
