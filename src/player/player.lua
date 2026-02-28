@@ -21,6 +21,7 @@ function Player:new(o)
     o.lane = 0 -- binary lane system, 0 is the top lane, 1 is the bottom lane
     o.laneChangeSpeed = 200
     o.drawHitbox = false
+    o.playerImage = love.graphics.newImage("assets/player/player.png")
     return o
 end
 
@@ -30,8 +31,11 @@ function Player:update(dt)
 end
 
 function Player:draw()
-    love.graphics.setColor(self.color)
-    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    -- reset the color to white before drawing the player image
+    -- it seems to be necessary to reset the color before drawing the player image
+    -- otherwise the player image will be tinted with the last color used for drawing the lanes
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(self.playerImage, self.x, self.y, 0, self.width / self.playerImage:getWidth(), self.height / self.playerImage:getHeight())
     self:hitbox()
 end
 

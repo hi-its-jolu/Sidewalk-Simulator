@@ -14,12 +14,21 @@ function AvgJoe:new(o)
     o.walkSpeed = 250
     o.laneChangeSpeed = 100
     o.drawHitbox = false
+    o.image = o.image or love.graphics.newImage("assets/npc/avgJoe.png")
+    o.flipImage = o.flipImage or true
     return o
 end
 
 function AvgJoe:draw()
-    love.graphics.setColor(self.color)
-    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    love.graphics.setColor(1, 1, 1)
+    
+    love.graphics.draw(
+        self.image, -- image
+        self.x, self.y, -- position x,y
+        0, -- rotation
+        self.flipImage and 1 or -1, -- scale x (we will flip the image by setting scale x to -1 if flipImage is true) 
+        1 -- scale y (we will flip the image by setting scale x to -1 if flipImage is true)
+    )
     self:hitbox()
 end
 
