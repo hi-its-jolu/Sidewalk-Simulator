@@ -1,9 +1,10 @@
 # Sidewalk Simulator
 
-A simple game built with LÖVE (love2d) where you control a player moving between lanes on a sidewalk. Dodging on coming traffic as it approachs. Survive as long as you can and watch out for the eradict movements of other people.
+A simple game built with LÖVE (love2d) where you control a player moving between lanes on a sidewalk. Dodging on coming traffic as it approachs. Survive as long as you can and watch out for the erratic movements of other people.
 
 ## Features
 - Player movement between lanes using up/down keys
+- A slew characters will come from the opposite side. Your goal is to avoid them. 
 
 
 ## Getting Started
@@ -27,6 +28,10 @@ A simple game built with LÖVE (love2d) where you control a player moving betwee
 - **Down Arrow**: Move player down
 - **~ Key**: To toggle debug mode
 - **R Key**: To reset the whole game
+
+## Authors
+- Johnson Lu (hi_its_jolu) (Developer)
+- Jonathan Yuen (Artist)
 
 ## License
 MIT
