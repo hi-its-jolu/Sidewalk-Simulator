@@ -1,0 +1,28 @@
+# LÖVE project ignores
+*.love
+
+# macOS
+.DS_Store
+
+# LuaRocks
+.rocks/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Backup files
+*~
+*.bak
+
+# Compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Temporary files
+*.tmp
+*.temp
