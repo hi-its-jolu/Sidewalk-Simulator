@@ -2,9 +2,12 @@
 -- Configuration and constants
 local config = require "config.config"
 
+-- Utility functions
+local helper = require "utils.helper"
+
 -- Game objects
 local player = require "src.player"
-local lanes = require "src.lanes"
+local lanes = require "src.environment.lanes"
 
 -- Game state management
 local collisionManager = require "src.controllers.collisionManager"
@@ -43,7 +46,14 @@ end
 
 
 function love.keypressed(key)
-    if key == "r" then
+    local controls = config.Controls
+
+    -- TODO: fix this pause implementation.
+    if helper.arrayContains(controls.pause, key) then
+        love.update = love.update and nil or Update
+    end
+
+    if helper.arrayContains(controls.reset, key) then
         love.load()
         return
     end
