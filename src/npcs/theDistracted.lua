@@ -14,42 +14,39 @@ function TheDistracted:new(o)
     -- Overrride
     o.name = "The Distracted"
     o.image = love.graphics.newImage("assets/npc/placeholder.png")
-    -- Lane switching config
-    o.laneSwitchInterval = o.laneSwitchInterval or 1.5 -- seconds
+    o.lane = o.lane or 1
     o.laneSwitchTimer = 0
-    o.laneSwitchRandomness = o.laneSwitchRandomness or 0.5 -- seconds
-    o.targetLane = o.lane or 1
-    o.hasSwitchedLane = false
+    o.laneSwitchInterval = math.random(1, 3) -- switch lanes every 2-5 seconds
+    o.hasChangedLane = false
     return o
 end
 
 function TheDistracted:walk(dt)
     self.x = self.x - self.walkSpeed * dt
-    -- Lane switching logic
-    self.laneSwitchTimer = self.laneSwitchTimer + dt
-    local switchTime = self.laneSwitchInterval + math.random() * self.laneSwitchRandomness
-    if not self.hasSwitchedLane and self.laneSwitchTimer >= switchTime then
-        self.laneSwitchTimer = 0
-        -- Pick a new target lane (not current)
-        local newLane = math.random(0, 1)
-        if newLane == self.targetLane then
-            newLane = 1 - self.targetLane
-        end
-        self.targetLane = newLane
-        self.hasSwitchedLane = true
+    
+    
+    -- only lane change if the NPC is 2 chunks from the player
+    -- we don't want the NPC to lane change into the player
+    local playerWidth = Config.ChunkSize * 2
+    local playerSafeZone = playerWidth + (Config.ChunkSize * 2)
+    if self.x >  playerSafeZone then
+        self:switchLaneTimer(dt)
     end
-    -- Smooth transition to target lane
-    self:moveToLane(self.targetLane, dt)
-    -- Only update self.lane when transition is complete
-    local targetY = ScreenHeight/2 - self.height/2 - self.offset
-    if self.targetLane == 1 then
-        targetY = ScreenHeight/2 + self.height/2 - self.offset
-    end
-    if math.abs(self.y - targetY) < 1 then
-        self.lane = self.targetLane
-    end
+
+    self:moveToLane(self.lane, dt)
+    
     if self.x + self.width < 0 then
         self.remove = true
+    end
+end
+
+-- create a timer, if dt exceeds timer, switch lanes and reset timer
+function TheDistracted:switchLaneTimer(dt)
+    self.laneSwitchTimer = self.laneSwitchTimer + dt
+    if self.laneSwitchTimer >= self.laneSwitchInterval then
+        self.laneSwitchTimer = 0
+        self.lane = not self.lane
+        self.laneSwitchInterval = math.random(1, 3)
     end
 end
 

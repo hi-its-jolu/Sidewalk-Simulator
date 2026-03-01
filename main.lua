@@ -54,7 +54,7 @@ function love.update(dt)
         if npc.walk then npc:walk(dt) end
     end
     CollisionManager:update(dt)
-    Spawner:update(dt, Lanes)
+    Spawner:update(dt, GameScore.score)
     GameScore:update()
 end
 

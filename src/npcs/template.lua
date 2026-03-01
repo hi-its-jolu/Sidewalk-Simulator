@@ -1,5 +1,4 @@
 local Config = require "config.config"
-
 local Template = {}
 
 Template.__index = Template
@@ -53,9 +52,12 @@ function Template:walk(dt)
 end
 
 function Template:moveToLane(targetLane, dt)
-    local targetY = ScreenHeight/2 - self.height/2 - self.offset -- default to lane 0
+    local targetY = ScreenHeight/2 - self.height/2 - Config.ChunkSize -- default to lane 0
+    
     if targetLane == 1 then
-        targetY = ScreenHeight/2 + self.height/2 - self.offset
+        targetY = ScreenHeight/2 + self.height/2 - Config.ChunkSize
+    elseif targetLane == 0 then
+        targetY = ScreenHeight/2 - self.height/2 - Config.ChunkSize
     end
 
     if self.y < targetY then

@@ -1,8 +1,10 @@
 local Config = require "config.config"
 local Helper = require "utils.helper"
 
+--NPCs
 local AvgJoe = require "src.npcs.avgJoe"
 local TheDistracted = require "src.npcs.theDistracted"
+local SpeedWalker = require "src.npcs.speedWalker"
 
 local Spawner = {}
 Spawner.__index = Spawner
@@ -17,20 +19,22 @@ function Spawner:new(npcList)
 end
 
 -- Call this in love.update(dt)
-function Spawner:update(dt, lanes)
+function Spawner:update(dt, score)
     self.spawnTimer = self.spawnTimer + dt
 
     -- If no NPCs exist, spawn one immediately
     if #NPCs == 0 then
         local laneNum = math.random(1, 2)
         
-        local npcType = self:getRandomSpawn(1)
+        local npcType = self:getRandomSpawn(score)
         local npc
 
         if npcType == "AvgJoe" then
             npc = AvgJoe:new()
         elseif npcType == "TheDistracted" then
             npc = TheDistracted:new()
+        elseif npcType == "SpeedWalker" then
+            npc = SpeedWalker:new()
         else
             npc = AvgJoe:new()
         end
@@ -48,13 +52,14 @@ function Spawner:update(dt, lanes)
         self.spawnTimer = 0
         self.nextSpawn = self:nextSpawnTime()
         local laneNum = math.random(1, 2)
-        local lane = laneNum == 1 and lanes.lane1 or lanes.lane2
-        local npcType = self:getRandomSpawn(1)
+        local npcType = self:getRandomSpawn(score)
         local npc
         if npcType == "AvgJoe" then
             npc = AvgJoe:new()
         elseif npcType == "TheDistracted" then
             npc = TheDistracted:new()
+        elseif npcType == "SpeedWalker" then
+            npc = SpeedWalker:new()
         else
             npc = AvgJoe:new()
         end
@@ -65,34 +70,37 @@ function Spawner:update(dt, lanes)
     end
 end
 
-function Spawner:spawnNPC(npcType)
 
-    local spawn = self:getRandomSpawn(npcType)
-
-    table.insert(self.npcList, spawn)
-end
-
-
-function Spawner:getRandomSpawn(level)
-    local easyNpcTypes = {
-        "AvgJoe",
-        "TheDistracted"
+function Spawner:getRandomSpawn(score)
+    
+    local tutorialNPCs = {
+        "AvgJoe"
     }
 
-    local medNPCTypes = {}
+    local easyNpcTypes = {
+        "SpeedWalker"
+    }
+
+    local medNPCTypes = {
+        "TheDistracted"
+    }
     local hardNPCTypes = {}
 
     local npcPool = {}
 
-    if level == 1 then
+    if score >=0 then
+        Helper.arraySpread(npcPool, tutorialNPCs)
+    end
+
+    if score >= 50 then
         Helper.arraySpread(npcPool, easyNpcTypes)
     end
 
-    if level == 2 then
+    if score >= 100 then
         Helper.arraySpread(npcPool, medNPCTypes)
     end
 
-    if level >= 3 then
+    if score >= 200 then
         Helper.arraySpread(npcPool, hardNPCTypes)
     end
     
