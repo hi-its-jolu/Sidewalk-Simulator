@@ -7,13 +7,16 @@ local helper = require "utils.helper"
 
 -- Game objects
 local player = require "src.player.player"
+
+-- Environment
+local background = require "src.environment.background"
+local foreground = require "src.environment.foreground"
 local lanes = require "src.environment.lanes"
+local score = require "src.interface.score"
 
 -- Game state management
 local collisionManager = require "src.controllers.collisionManager"
-
--- TEMP NPCs - remove when spawner is implemented
-local avgJoe = require "src.npcs.avgJoe"
+local spawner = require "src.controllers.spawner"
 
 function love.load()
     ScreenWidth, ScreenHeight = config.ScreenWidth, config.ScreenHeight
@@ -22,19 +25,27 @@ function love.load()
 
     Player = player:new()
     Lanes = lanes:new()
-    AvgJoe = avgJoe:new()
-
-    NPCs = {AvgJoe}
+    Background = background:new(Lanes)
+    Foreground = foreground:new(Lanes)
+    Spawner = spawner:new()
+    GameScore = score:new()
+    NPCs = {}
     CollisionManager = collisionManager:new(Player, NPCs)
+    FrameCount = 0
 end
 
 function love.draw()
-    love.graphics.setColor(config.BackgroundColor)
+    love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", 0, 0, ScreenWidth, ScreenHeight)
+    Background:draw()
     Lanes:drawLanes()
+    Foreground:draw()
     Player:draw()
-    AvgJoe:draw()
+    for _, npc in ipairs(NPCs) do
+        npc:draw()
+    end
     CollisionManager:draw()
+    GameScore:draw()
 end
 
 function love.update(dt)
@@ -43,6 +54,8 @@ function love.update(dt)
         if npc.walk then npc:walk(dt) end
     end
     CollisionManager:update(dt)
+    Spawner:update(dt, Lanes)
+    GameScore:update()
 end
 
 
@@ -60,7 +73,11 @@ function love.keypressed(key)
     end
     Player:debug(key)
     Player:controller(key)
-    AvgJoe:debug(key)
+
+    -- pass the key press to the NPCs for debugging purposes
+    for _, npc in ipairs(NPCs) do
+        npc:debug(key)
+    end
 
     
 end

@@ -1,8 +1,9 @@
-local Player = {}
-local config = require "config.config"
-local helper = require "utils.helper"
+local Config = require "config.config"
+local Helper = require "utils.helper"
 
-local controls = config.Controls
+local Player = {}
+
+local controls = Config.Controls
 
 -- Player class definition
 Player.__index = Player
@@ -12,16 +13,16 @@ function Player:new(o)
     o = o or {}
     setmetatable(o, Player)
     -- defaults
-    o.width = o.width or 32
-    o.height = o.height or 64
-    o.x = o.x or o.width * 4
-    o.y = o.y or ScreenHeight/2 - o.height/2
-    o.offset = o.offset or 15 -- offset the y position
+    o.width = o.width or Config.ChunkSize
+    o.height = o.height or Config.ChunkSize * 2
+    o.x = o.x or o.width * 2 -- offset the X by a bit for better visibility
+    o.y = o.y or ScreenHeight/2 - o.height/2 - Config.ChunkSize -- offset the Y by a bit to align with lanes
+    o.offset = o.offset or 30 -- offset the y position
     o.color = o.color or {1, 1, 1}
     o.lane = 0 -- binary lane system, 0 is the top lane, 1 is the bottom lane
     o.laneChangeSpeed = 200
     o.drawHitbox = false
-    o.playerImage = love.graphics.newImage("assets/player/player.png")
+    o.playerImage = love.graphics.newImage("assets/player/player-2x.png")
     return o
 end
 
@@ -35,7 +36,12 @@ function Player:draw()
     -- it seems to be necessary to reset the color before drawing the player image
     -- otherwise the player image will be tinted with the last color used for drawing the lanes
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(self.playerImage, self.x, self.y, 0, self.width / self.playerImage:getWidth(), self.height / self.playerImage:getHeight())
+    love.graphics.draw(self.playerImage,
+    self.x, 
+    self.y - self.offset, 
+    0, 
+    1,
+    1)
     self:hitbox()
 end
 
@@ -43,7 +49,11 @@ function Player:hitbox()
 
     if self.drawHitbox then
         love.graphics.setColor(0, 1, 0)
-        love.graphics.rectangle("line", self.x - 1, self.y + self.height/2 - 1, self.width + 2, self.height/2 + 2)
+        love.graphics.rectangle("line", 
+        self.x - 1,
+        self.y + self.height/2 - 1 - self.offset,
+        self.width + 2, 
+        self.height/2 + 2)
     end
 
     return {
@@ -55,9 +65,10 @@ function Player:hitbox()
 end
 
 function Player:moveToLane(targetLane, dt)
-    local targetY = ScreenHeight/2 - self.height/2 - self.offset -- default to lane 0
+    local targetY = ScreenHeight/2 - self.height/2 - Config.ChunkSize -- default to lane 0
+    
     if targetLane == 1 then
-        targetY = ScreenHeight/2 + self.height/2 - self.offset
+        targetY = ScreenHeight/2 + self.height/2 - Config.ChunkSize
     end
 
     if self.y < targetY then
@@ -68,16 +79,18 @@ function Player:moveToLane(targetLane, dt)
 end
 
 function Player:controller(key)
-        if helper.arrayContains(controls.down, key) then
+        if Helper.arrayContains(controls.down, key) then
         self.lane = 1
-    elseif helper.arrayContains(controls.up, key) and self.lane > 0 then
+    elseif Helper.arrayContains(controls.up, key) and self.lane > 0 then
         self.lane = 0
     end
 end
 
 function Player:debug(key)
-    if helper.arrayContains(controls.debug, key) then
+    if Helper.arrayContains(controls.debug, key) then
         self.drawHitbox = not self.drawHitbox
+
+        Config.DebugToggle = not Config.DebugToggle
     end
 end
 
