@@ -1,14 +1,14 @@
 ---@diagnostic disable: duplicate-set-field
-local AvgJoe = require "src.npcs.avgJoe"
+local Template = require "src.npcs.template"
 local Config = require "config.config"
 
-local TheDistracted = setmetatable({}, {__index = AvgJoe})
+local TheDistracted = setmetatable({}, {__index = Template})
 TheDistracted.__index = TheDistracted
 
 
 function TheDistracted:new(o)
-    -- inherit AvgJoe
-    o = o or AvgJoe:new()
+    -- inherit Template
+    o = o or Template:new()
     setmetatable(o, TheDistracted)
     
     -- Overrride

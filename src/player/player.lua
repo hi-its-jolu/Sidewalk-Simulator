@@ -20,7 +20,7 @@ function Player:new(o)
     o.offset = o.offset or 30 -- offset the y position
     o.color = o.color or {1, 1, 1}
     o.lane = 0 -- binary lane system, 0 is the top lane, 1 is the bottom lane
-    o.laneChangeSpeed = 200
+    o.laneChangeSpeed = 800
     o.drawHitbox = false
     o.playerImage = love.graphics.newImage("assets/player/player-2x.png")
     return o
