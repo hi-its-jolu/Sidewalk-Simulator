@@ -64,7 +64,7 @@ function love.keypressed(key)
 
     -- TODO: fix this pause implementation. [BUG]
     if helper.arrayContains(controls.pause, key) then
-        love.update = love.update and nil or Update
+        love.update = love.update and nil
     end
 
     if helper.arrayContains(controls.reset, key) then

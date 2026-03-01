@@ -8,6 +8,7 @@ function AvgJoe:new(o)
     o = o or {}
     setmetatable(o, AvgJoe)
     -- defaults
+    o.name = o.name or "Average Joe"
     o.width = o.width or Config.ChunkSize
     o.height = o.height or Config.ChunkSize * 2
     o.x = o.x or Config.ScreenWidth 
