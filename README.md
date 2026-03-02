@@ -33,5 +33,9 @@ A simple game built with LÖVE (love2d) where you control a player moving betwee
 - Johnson Lu (hi_its_jolu) (Developer)
 - Jonathan Yuen (Artist)
 
+
+## Roadmap
+https://miro.com/app/board/uXjVG5ZqNbs=/
+
 ## License
 MIT
