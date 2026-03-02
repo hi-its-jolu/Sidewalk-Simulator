@@ -24,7 +24,7 @@ function Player:new(o)
     o.drawHitbox = false
     o.playerImage = love.graphics.newImage("assets/player/player-2x.png")
     o.health = 3
-    
+    o.heartImage = love.graphics.newImage("assets/player/heart.png")
     return o
 end
 
@@ -44,7 +44,16 @@ function Player:draw()
     0, 
     1,
     1)
+    self:healthSystem()
     self:hitbox()
+end
+
+function Player:healthSystem()
+    love.graphics.setColor(1, 1, 1)
+    
+    for i = 1, self.health do
+        love.graphics.draw(self.heartImage, 20 + (i - 1) * (self.heartImage:getWidth() + 10), 20)
+    end
 end
 
 function Player:hitbox()
