@@ -25,7 +25,7 @@ end
 function Background:draw()
 
     for i, asset in ipairs(self.scene) do
-        love.graphics.setColor(config.BackgroundColor)
+        love.graphics.setColor(1, 1, 1)
         love.graphics.draw(
         asset,
         (i-1) * asset:getWidth() * 2, -- X
