@@ -26,6 +26,10 @@ end
 function Template:draw()
     love.graphics.setColor(1, 1, 1)
 
+    if self.lane == 0 then
+        self.y = ScreenHeight/2 - self.height/2 - Config.ChunkSize
+    end
+
     if self.lane == 1 then
         self.y = ScreenHeight/2 + self.height/2 - Config.ChunkSize
     end
@@ -53,12 +57,6 @@ end
 
 function Template:moveToLane(targetLane, dt)
     local targetY = ScreenHeight/2 - self.height/2 - Config.ChunkSize -- default to lane 0
-    
-    if targetLane == 1 then
-        targetY = ScreenHeight/2 + self.height/2 - Config.ChunkSize
-    elseif targetLane == 0 then
-        targetY = ScreenHeight/2 - self.height/2 - Config.ChunkSize
-    end
 
     if self.y < targetY then
         self.y = math.min(self.y + self.laneChangeSpeed * dt, targetY)

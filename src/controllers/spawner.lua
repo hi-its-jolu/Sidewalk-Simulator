@@ -14,7 +14,7 @@ function Spawner:new(npcList)
     setmetatable(o, Spawner)
     o.npcList = npcList or NPCs or {}
     o.spawnTimer = 0
-    o.nextSpawn = o:nextSpawnTime()
+    o.nextSpawn = o:nextSpawnTime(0)
     return o
 end
 
@@ -43,14 +43,14 @@ function Spawner:update(dt, score)
             table.insert(NPCs, npc)
         end
         self.spawnTimer = 0
-        self.nextSpawn = self:nextSpawnTime()
+        self.nextSpawn = self:nextSpawnTime(score)
         return
     end
 
     -- Spawn NPCs at random intervals
     if self.spawnTimer >= self.nextSpawn then
         self.spawnTimer = 0
-        self.nextSpawn = self:nextSpawnTime()
+        self.nextSpawn = self:nextSpawnTime(score)
         local laneNum = math.random(1, 2)
         local npcType = self:getRandomSpawn(score)
         local npc
@@ -78,11 +78,11 @@ function Spawner:getRandomSpawn(score)
     }
 
     local easyNpcTypes = {
-        "SpeedWalker"
+        "TheDistracted"
     }
 
     local medNPCTypes = {
-        "TheDistracted"
+        "SpeedWalker"
     }
     local hardNPCTypes = {}
 
@@ -114,9 +114,22 @@ function Spawner:getRandomSpawn(score)
     return randomNpc
 end
 
-function Spawner:nextSpawnTime()
-    -- TODO: make this more robust, as level increases, spawn more npcs faster
-    local randomInterval = math.random(10, 40) / 10
+function Spawner:nextSpawnTime(score)
+    local spawnMin, spawnMax = 10, 50
+
+    if score >= 50 then
+        spawnMin, spawnMax = 10, 40
+    end
+
+    if score >= 100 then
+        spawnMin, spawnMax = 10, 35
+    end
+
+    if score >= 200 then
+        spawnMin, spawnMax = 10, 30
+    end
+
+    local randomInterval = math.random(spawnMin, spawnMax) / 10
     return randomInterval
 end
 

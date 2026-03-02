@@ -56,6 +56,7 @@ function love.update(dt)
     CollisionManager:update(dt)
     Spawner:update(dt, GameScore.score)
     GameScore:update()
+    Background:update(dt)
 end
 
 

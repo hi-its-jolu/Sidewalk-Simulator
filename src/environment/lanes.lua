@@ -21,10 +21,17 @@ function Lanes:new()
         height = o.laneHeight
     }
     o.sizesPrinted = false
+    o.laneImage = love.graphics.newImage("assets/environment/sidewalk.png")
     return o
 end
 
 function Lanes:drawLanes()
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(self.laneImage, self.lane1.x, self.lane1.y, 0, 2, 2)
+end
+
+
+function Lanes:debug()
     love.graphics.setColor(config.LaneColor)
 
     love.graphics.rectangle("fill", self.lane1.x, self.lane1.y, self.lane1.width, self.lane1.height)
@@ -33,7 +40,6 @@ function Lanes:drawLanes()
     love.graphics.rectangle("line", self.lane1.x, self.lane1.y, self.lane1.width, self.lane1.height)
     love.graphics.rectangle("line", self.lane2.x, self.lane2.y, self.lane2.width, self.lane2.height)
 end
-
 
 
 

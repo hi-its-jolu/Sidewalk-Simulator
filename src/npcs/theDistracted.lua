@@ -45,7 +45,13 @@ function TheDistracted:switchLaneTimer(dt)
     self.laneSwitchTimer = self.laneSwitchTimer + dt
     if self.laneSwitchTimer >= self.laneSwitchInterval then
         self.laneSwitchTimer = 0
-        self.lane = not self.lane
+        
+        if self.lane == 0 then
+            self.lane = 1
+        else
+            self.lane = 0
+        end
+
         self.laneSwitchInterval = math.random(1, 3)
     end
 end
