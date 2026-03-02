@@ -1,5 +1,5 @@
 return {
-    ScreenWidth = 853,
+    ScreenWidth = 960,
     ScreenHeight = 640,
     ChunkSize = 64,
     BackgroundColor = {135/255, 206/255, 235/255},

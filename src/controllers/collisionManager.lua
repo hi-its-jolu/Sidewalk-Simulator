@@ -5,7 +5,8 @@ function CollisionManager:new(player, npcs)
     local self = setmetatable({}, CollisionManager)
     self.player = player
     self.npcs = npcs or {}
-    self.collisionDetected = false
+    self.collisionOver = false
+    self.collisionDetected = true
     return self
 end
 
@@ -23,11 +24,24 @@ end
 function CollisionManager:checkCollisions()
     local playerHitbox = self.player:hitbox()
     self.collisionMessage = nil
+    local anyCollision = false
     for _, npc in ipairs(self.npcs) do
         local npcHitbox = npc:hitbox()
         if self:hitboxCollision(playerHitbox, npcHitbox) then
+            anyCollision = true
             self.collisionDetected = true
+            if self.collisionOver == true then
+                self.player.health = self.player.health - 1
+                self.collisionOver = false
+            end
+            self.collisionMessage = "Collision with " .. npc.name .. "! Health: " .. self.player.health
+            break
         end
+    end
+
+    if not anyCollision and self.collisionDetected then
+        self.collisionOver = true
+        self.collisionDetected = false
     end
 end
 
@@ -42,7 +56,18 @@ end
 function CollisionManager:draw()
     if self.collisionDetected then
         love.graphics.setColor(1, 0, 0)
-        love.graphics.print("Collision detected with NPC!", 20, 20)
+
+        -- TODO: Remove debug text and replace with some kind of visual indicator of collision
+        if self.collisionMessage then
+            love.graphics.print(self.collisionMessage, 20, 20)
+        end
+    end
+
+
+    if self.player.health <= 0 then
+        love.graphics.setColor(1, 0, 0)
+        love.graphics.print("Game Over!", ScreenWidth/2 - 50, ScreenHeight/2)
+        love.graphics.setColor(1, 1, 1)
     end
 end
 

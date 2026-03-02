@@ -23,6 +23,8 @@ function Player:new(o)
     o.laneChangeSpeed = 800
     o.drawHitbox = false
     o.playerImage = love.graphics.newImage("assets/player/player-2x.png")
+    o.health = 3
+    
     return o
 end
 
