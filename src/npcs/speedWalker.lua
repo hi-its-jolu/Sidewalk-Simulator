@@ -13,8 +13,9 @@ function SpeedWalker:new(o)
     
     -- Overrride
     o.name = "Speed Walker"
-    o.image = love.graphics.newImage("assets/npc/placeholder.png")
-    o.walkSpeed = 800
+    o.image = love.graphics.newImage("assets/npc/speedwalker.png")
+    o.scale = 1
+    o.walkSpeed = 750
     return o
 end
 

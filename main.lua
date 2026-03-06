@@ -25,7 +25,7 @@ function love.load()
 
     Player = player:new()
     Lanes = lanes:new()
-    Background = background:new(Lanes)
+    Background = background:new()
     Foreground = foreground:new(Lanes)
     Spawner = spawner:new()
     GameScore = score:new()
@@ -38,7 +38,7 @@ function love.draw()
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", 0, 0, ScreenWidth, ScreenHeight)
     Background:draw()
-    Lanes:drawLanes()
+    Lanes:draw()
     Foreground:draw()
     Player:draw()
     for _, npc in ipairs(NPCs) do
@@ -57,6 +57,7 @@ function love.update(dt)
     Spawner:update(dt, GameScore.score)
     GameScore:update()
     Background:update(dt)
+    Lanes:update(dt)
 end
 
 

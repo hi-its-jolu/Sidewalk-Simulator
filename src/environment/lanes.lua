@@ -1,11 +1,13 @@
+---@diagnostic disable: duplicate-set-field
+local scrollingEnvironment = require("src.environment.scrollingEnvironment")
 local config = require "config.config"
 
 -- for temporary visualization of lanes
-local Lanes = {}
+local Lanes = setmetatable({}, {__index = scrollingEnvironment})
 Lanes.__index = Lanes
 
 function Lanes:new()
-    local o = {}
+    local o = scrollingEnvironment:new()
     setmetatable(o, Lanes)
     o.laneHeight = Player.height
     o.lane1 = {
@@ -20,16 +22,21 @@ function Lanes:new()
         width = ScreenWidth,
         height = o.laneHeight
     }
-    o.sizesPrinted = false
-    o.laneImage = love.graphics.newImage("assets/environment/sidewalk.png")
+    
+    o.scale = 2
+    o.y = o.lane1.y
+    o.maxSceneSize = 3
+    o.assets = {
+        love.graphics.newImage("assets/environment/sidewalk.png")
+    }
+    o.assetStack = {}
+    for i, asset in ipairs(o.assets) do o.assetStack[i] = asset end
+    o.scrollSpeed = 150
+    o.scrollOffset = 50
+    o.xOffset = 0
+    o.scene = o:buildScene() -- rebuild scene with new assets
     return o
 end
-
-function Lanes:drawLanes()
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(self.laneImage, self.lane1.x, self.lane1.y, 0, 2, 2)
-end
-
 
 function Lanes:debug()
     love.graphics.setColor(config.LaneColor)
