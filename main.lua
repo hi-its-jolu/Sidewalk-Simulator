@@ -43,6 +43,7 @@ function love.draw()
     Player:draw()
     for _, npc in ipairs(NPCs) do
         npc:draw()
+        if npc.drawBoundaries then npc:drawBoundaries() end 
     end
     CollisionManager:draw()
     GameScore:draw()

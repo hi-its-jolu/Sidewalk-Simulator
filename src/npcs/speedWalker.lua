@@ -6,9 +6,9 @@ local SpeedWalker = setmetatable({}, {__index = Template})
 SpeedWalker.__index = SpeedWalker
 
 
-function SpeedWalker:new(o)
+function SpeedWalker:new(lanes)
     -- inherit Template
-    o = o or Template:new()
+    local o = Template:new()
     setmetatable(o, SpeedWalker)
     
     -- Overrride
@@ -16,6 +16,7 @@ function SpeedWalker:new(o)
     o.image = love.graphics.newImage("assets/npc/speedwalker.png")
     o.scale = 1
     o.walkSpeed = 750
+    o.lanes = lanes
     return o
 end
 

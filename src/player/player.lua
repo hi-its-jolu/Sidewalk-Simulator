@@ -17,7 +17,7 @@ function Player:new(o)
     o.height = o.height or Config.ChunkSize * 2
     o.x = o.x or o.width * 2 -- offset the X by a bit for better visibility
     o.y = o.y or ScreenHeight/2 - o.height/2 - Config.ChunkSize -- offset the Y by a bit to align with lanes
-    o.offset = o.offset or 30 -- offset the y position
+    o.offset = o.offset or 50 -- offset the y position
     o.color = o.color or {1, 1, 1}
     o.lane = 0 -- binary lane system, 0 is the top lane, 1 is the bottom lane
     o.laneChangeSpeed = 800

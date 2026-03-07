@@ -13,7 +13,7 @@ function Template:new(o)
     o.spawnX = o.spawnX or Config.ScreenWidth
     o.x = o.x or o.spawnX
     o.y = o.y or ScreenHeight/2 - o.height/2 - Config.ChunkSize -- offset the Y by a bit to align with lanes
-    o.offset = o.offset or 30 -- offset the y position
+    o.offset = o.offset or math.random(30, 60) -- offset the y position
     o.color = o.color or {1, 1, 1}
     o.walkSpeed = 250
     o.laneChangeSpeed = 100

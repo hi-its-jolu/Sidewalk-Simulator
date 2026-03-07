@@ -5,12 +5,13 @@ local Template = require "src.npcs.template"
 local Granny = setmetatable({}, {__index = Template})
 Granny.__index = Granny
 
-function Granny:new(o)
-    o = o or Template:new()
+function Granny:new(lanes)
+    local o = Template:new()
     setmetatable(o, Granny)
     -- defaults
     o.name = o.name or "Granny"
     o.image = love.graphics.newImage("assets/npc/granny.png")
+    o.lanes = lanes
     o.walkSpeed = 175 -- slower than average joe
     return o
 end

@@ -5,12 +5,13 @@ local Template = require "src.npcs.template"
 local AvgJoe = setmetatable({}, {__index = Template})
 AvgJoe.__index = AvgJoe
 
-function AvgJoe:new(o)
-    o = o or Template:new()
+function AvgJoe:new(lanes)
+    local o = Template:new()
     setmetatable(o, AvgJoe)
     -- defaults
     o.name = o.name or "Average Joe"
     o.image = love.graphics.newImage("assets/npc/avgJoe-2x.png")
+    o.lanes = lanes
     return o
 end
 

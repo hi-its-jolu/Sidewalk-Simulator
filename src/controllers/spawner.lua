@@ -6,6 +6,7 @@ local AvgJoe = require "src.npcs.avgJoe"
 local TheDistracted = require "src.npcs.theDistracted"
 local SpeedWalker = require "src.npcs.speedWalker"
 local Granny = require "src.npcs.granny"
+local Ghost = require "src.npcs.ghost"
 
 local Spawner = {}
 Spawner.__index = Spawner
@@ -39,15 +40,17 @@ function Spawner:update(dt, score)
 
     local getNPC = function(npcType)
         if npcType == "AvgJoe" then
-            return AvgJoe:new()
+            return AvgJoe:new(self.lanes)
         elseif npcType == "TheDistracted" then
-            return TheDistracted:new()
+            return TheDistracted:new(self.lanes)
         elseif npcType == "Granny" then
-            return Granny:new()
+            return Granny:new(self.lanes)
         elseif npcType == "SpeedWalker" then
-            return SpeedWalker:new()
+            return SpeedWalker:new(self.lanes)
+        elseif npcType == "Ghost" then
+            return Ghost:new(self.lanes)
         else
-            return AvgJoe:new() -- default NPC type
+            return AvgJoe:new(self.lanes) -- default NPC type
         end
     end
 
@@ -105,7 +108,8 @@ function Spawner:getRandomSpawn(score)
     }
 
     local medNPCTypes = {
-        "SpeedWalker"
+        "SpeedWalker",
+        -- "Ghost" -- needs works
     }
     local hardNPCTypes = {}
 
@@ -138,7 +142,7 @@ function Spawner:getRandomSpawn(score)
 end
 
 function Spawner:nextSpawnTime(score)
-    local spawnMin, spawnMax = 10, 20
+    local spawnMin, spawnMax = 10, 30
 
     if score >= 50 then spawnMin, spawnMax = 10, 15 end
     if score >= 100 then spawnMin, spawnMax = 8, 12 end

@@ -6,14 +6,14 @@ local TheDistracted = setmetatable({}, {__index = Template})
 TheDistracted.__index = TheDistracted
 
 
-function TheDistracted:new(o)
+function TheDistracted:new(lanes)
     -- inherit Template
-    o = o or Template:new()
+    local o = Template:new()
     setmetatable(o, TheDistracted)
     
     -- Overrride
     o.name = "The Distracted"
-    o.image = love.graphics.newImage("assets/npc/placeholder.png")
+    o.image = love.graphics.newImage("assets/npc/distracted.png")
     o.lane = o.lane or 1
     o.laneSwitchTimer = 0
     o.laneSwitchInterval = math.random(1, 3) -- switch lanes every 2-5 seconds
@@ -23,7 +23,6 @@ end
 
 function TheDistracted:walk(dt)
     self.x = self.x - self.walkSpeed * dt
-    
     
     -- only lane change if the NPC is 2 chunks from the player
     -- we don't want the NPC to lane change into the player
