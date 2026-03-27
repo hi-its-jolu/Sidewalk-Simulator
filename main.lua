@@ -13,6 +13,7 @@ local background = require "src.environment.background"
 local foreground = require "src.environment.foreground"
 local lanes = require "src.environment.lanes"
 local score = require "src.interface.score"
+local pauseMenu = require "src.interface.pauseMenu"
 
 -- Game state management
 local collisionManager = require "src.controllers.collisionManager"
@@ -29,6 +30,7 @@ function love.load()
     Foreground = foreground:new()
     Spawner = spawner:new(Player, Lanes) --- IGNORE ---
     GameScore = score:new()
+    PauseMenu = pauseMenu:new()
     NPCs = {}
     CollisionManager = collisionManager:new(Player, NPCs)
     FrameCount = 0
@@ -48,9 +50,13 @@ function love.draw()
     CollisionManager:draw()
     GameScore:draw()
     Spawner:draw()
+    PauseMenu:draw()
 end
 
 function love.update(dt)
+    -- If the game is paused, skip updating game logic
+    if PauseMenu.paused then return end
+
     Player:update(dt)
     for _, npc in ipairs(NPCs) do
         if npc.walk then npc:walk(dt) end
@@ -67,9 +73,9 @@ end
 function love.keypressed(key)
     local controls = config.Controls
 
-    -- TODO: fix this pause implementation. [BUG]
     if helper.arrayContains(controls.pause, key) then
-        love.update = love.update and nil
+        PauseMenu:toggle()
+        return
     end
 
     if helper.arrayContains(controls.reset, key) then
