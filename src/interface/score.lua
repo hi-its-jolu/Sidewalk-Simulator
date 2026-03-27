@@ -22,8 +22,9 @@ function Score:update()
 end
 
 function Score:increaseSpeed()
-    local speedIncrease = 0.05
-    local newSpeedLevel = math.floor(self.score / 50)
+    local speedIncrease = Config.SpeedIncreasePerLevel or 0.05
+    local pointsPerSpeedLevel = Config.PointsPerSpeedLevel or 50
+    local newSpeedLevel = math.floor(self.score / pointsPerSpeedLevel)
     
     if newSpeedLevel > self.speedLevel then
         Config.SpeedMultiplier = Config.SpeedMultiplier + (speedIncrease * (newSpeedLevel - self.speedLevel))
