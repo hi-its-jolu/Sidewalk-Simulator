@@ -109,7 +109,7 @@ function Spawner:getRandomSpawn(score)
 
     local medNPCTypes = {
         "SpeedWalker",
-        -- "Ghost" -- needs works
+        "Ghost"
     }
     local hardNPCTypes = {}
 

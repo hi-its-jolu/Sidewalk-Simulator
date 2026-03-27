@@ -8,8 +8,8 @@ Ghost.__index = Ghost
 -- Ghost moves slow and sneaks up on the player.
 -- Comes in and out of visibility
 -- Once it pass 2 chunks from the player, it will disappear.
-function Ghost:new(o)
-    o = o or Template:new()
+function Ghost:new()
+    local o = Template:new()
     setmetatable(o, Ghost)
     -- defaults
     o.name = o.name or "Ghost"
