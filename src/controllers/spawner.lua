@@ -21,14 +21,15 @@ function Spawner:new(player, lanes)
     o.nextSpawn = o:nextSpawnTime(0)
 
     o.specialEvent = SpecialEvent:new(player, lanes)
-    
+
     -- buffer zone
     o.bufferZone = {
         x = lanes.lane1.x + (Config.ChunkSize),  -- x
         y = lanes.lane1.y, -- y
-        width = Config.ChunkSize * 4, -- width
-        height = Config.ChunkSize * 4 -- height 
+        width = Config.ChunkSize * 5, -- width
+        height = Config.ChunkSize * 4 -- height
     }
+    o.specialEvent.bufferZone = o.bufferZone
 
     return o
 end
@@ -103,8 +104,8 @@ function Spawner:update(dt, score)
     end
 
     -- Despawn NPCs that go off screen
-    for i, npc in ipairs(NPCs) do
-        if npc.x + npc.width < 0 then
+    for i = #NPCs, 1, -1 do
+        if NPCs[i].x + NPCs[i].width < 0 then
             table.remove(NPCs, i)
         end
     end

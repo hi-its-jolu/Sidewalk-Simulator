@@ -2,6 +2,7 @@ local Config = require "config.config"
 local Template = {}
 
 Template.__index = Template
+Template.image = love.graphics.newImage("assets/npc/placeholder.png")
 
 function Template:new(o)
     o = o or {}
@@ -19,7 +20,7 @@ function Template:new(o)
     o.laneChangeSpeed = 100
     o.lane = 1 -- binary lane system, 0 is the top lane, 1 is the bottom lane
     o.drawHitbox = false
-    o.image = o.image or love.graphics.newImage("assets/npc/placeholder.png")
+    o.image = o.image or Template.image
     o.flipImage = o.flipImage or true
     return o
 end
@@ -88,6 +89,13 @@ function Template:hitbox()
         width = self.width,
         height = self.height/2
     }
+end
+
+function Template:inBufferZone()
+    if not self.bufferZone then return false end
+    local bx = self.bufferZone.x
+    local bEnd = bx + self.bufferZone.width
+    return self.x < bEnd and self.x + self.width > bx
 end
 
 function Template:debug(key)

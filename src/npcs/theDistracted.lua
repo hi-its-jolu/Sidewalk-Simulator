@@ -4,16 +4,16 @@ local Config = require "config.config"
 
 local TheDistracted = setmetatable({}, {__index = Template})
 TheDistracted.__index = TheDistracted
-
+TheDistracted.image = love.graphics.newImage("assets/npc/distracted.png")
 
 function TheDistracted:new(lanes)
     -- inherit Template
     local o = Template:new()
     setmetatable(o, TheDistracted)
-    
+
     -- Overrride
     o.name = "The Distracted"
-    o.image = love.graphics.newImage("assets/npc/distracted.png")
+    o.image = TheDistracted.image
     o.lane = o.lane or 1
     o.laneSwitchTimer = 0
     o.laneSwitchInterval = math.random(1, 3) -- switch lanes every 2-5 seconds
@@ -50,7 +50,8 @@ function TheDistracted:walk(dt)
     -- we don't want the NPC to lane change into the player
     local playerWidth = Config.ChunkSize * 2
     local playerSafeZone = playerWidth + (Config.ChunkSize * 2)
-    if self.x >  playerSafeZone then
+    
+    if self.x > playerSafeZone and not self:inBufferZone() then
         self:switchLaneTimer(dt)
     end
 
