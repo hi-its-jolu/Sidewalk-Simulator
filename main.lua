@@ -13,6 +13,7 @@ local background = require "src.environment.background"
 local foreground = require "src.environment.foreground"
 local lanes = require "src.environment.lanes"
 local score = require "src.interface.score"
+local userStatsPanel = require "src.interface.userStatsPanel"
 local pauseMenu = require "src.interface.pauseMenu"
 
 -- Game state management
@@ -31,6 +32,7 @@ function love.load()
     Foreground = foreground:new()
     Spawner = spawner:new(Player, Lanes)
     GameScore = score:new()
+    UserStatsPanel = userStatsPanel:new()
     PauseMenu = pauseMenu:new()
     DebugHUD = Debug:new()
 
@@ -51,7 +53,7 @@ function love.draw()
         if npc.drawBoundaries then npc:drawBoundaries() end 
     end
     CollisionManager:draw()
-    GameScore:draw()
+    UserStatsPanel:draw()
     Spawner:draw()
     PauseMenu:draw()
     DebugHUD:drawDebugInfo()
