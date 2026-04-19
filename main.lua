@@ -24,6 +24,7 @@ local Debug = require "src.interface.debug"
 function love.load()
     ScreenWidth, ScreenHeight = config.ScreenWidth, config.ScreenHeight
     love.window.setTitle("Sidewalk Simulator")
+    love.graphics.setDefaultFilter("nearest","nearest")
     love.window.setMode(ScreenWidth, ScreenHeight)
 
     Player = player:new()
