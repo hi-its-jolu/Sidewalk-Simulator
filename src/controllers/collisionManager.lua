@@ -33,9 +33,12 @@ function CollisionManager:checkCollisions()
             self.collisionDetected = true
             if self.collisionOver == true then
                 self.player.health = self.player.health - 1
+
+                if(self.player.health <= 0) then
+                    self.player.health = 0
+                end
                 self.collisionOver = false
             end
-            self.collisionMessage = "Collision with " .. npc.name .. "! Health: " .. self.player.health
             break
         else
             npc.colliding = false
