@@ -24,11 +24,12 @@ function Animator:new(params)
 
     o.spriteSheet = params.spriteSheet
     o.frameDuration = params.frameDuration or 0.2
-    o.currentFrame = 1
+    o.currentFrame = 0
     o.frameTimer = 0
 
     o.frames = {}
     for i = 0, frameCount - 1 do
+        -- crop sheet into frames
         o.frames[i + 1] = love.graphics.newQuad(
             i * frameWidth, 0,
             frameWidth, frameHeight,
@@ -39,11 +40,14 @@ function Animator:new(params)
     return o
 end
 
+-- TODO Animation switcher or individually animator objects per spritesheet?
+
+
 function Animator:update(dt)
     self.frameTimer = self.frameTimer + dt
     if self.frameTimer >= self.frameDuration then
         self.frameTimer = self.frameTimer - self.frameDuration
-        self.currentFrame = (self.currentFrame % #self.frames) + 1
+        self.currentFrame = (self.currentFrame + 1) % #self.frames
     end
 end
 
@@ -51,7 +55,7 @@ end
 function Animator:draw(x, y, rotation, scaleX, scaleY)
     love.graphics.draw(
         self.spriteSheet,
-        self.frames[self.currentFrame],
+        self.frames[self.currentFrame + 1],
         x, y,
         rotation or 0,
         scaleX or 1,
