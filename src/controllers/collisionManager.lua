@@ -21,6 +21,7 @@ function CollisionManager:update(dt)
     self:checkCollisions()
 end
 
+-- TODO: Add I-Frames for player 
 function CollisionManager:checkCollisions()
     local playerHitbox = self.player:hitbox()
     self.collisionMessage = nil

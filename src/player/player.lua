@@ -1,5 +1,6 @@
 local Config = require "config.config"
 local Helper = require "utils.helper"
+local Animator = require "utils.animator"
 
 local Player = {}
 
@@ -22,7 +23,13 @@ function Player:new(o)
     o.lane = 0 -- binary lane system, 0 is the top lane, 1 is the bottom lane
     o.laneChangeSpeed = 800
     o.drawHitbox = false
-    o.playerImage = love.graphics.newImage("assets/player/player-2x.png")
+    o.scale = 2
+    o.animator = Animator:new({
+        spriteSheet   = love.graphics.newImage("assets/player/player-walking-animation.png"),
+        frameWidth    = Config.frameWidth,
+        frameHeight   = Config.frameHeight
+    })
+
     o.health = 3
     o.heartImage = love.graphics.newImage("assets/player/heart.png")
     return o
@@ -31,6 +38,8 @@ end
 function Player:update(dt)
     self:moveToLane(self.lane, dt)
     self:debug()
+
+    self.animator:update(dt)
 end
 
 function Player:draw()
@@ -38,12 +47,7 @@ function Player:draw()
     -- it seems to be necessary to reset the color before drawing the player image
     -- otherwise the player image will be tinted with the last color used for drawing the lanes
     love.graphics.setColor(1, 1, 1)
-    love.graphics.draw(self.playerImage,
-    self.x, 
-    self.y - self.offset, 
-    0, 
-    1,
-    1)
+    self.animator:draw(self.x, self.y - self.offset, 0, self.scale, self.scale)
     self:hitbox()
 end
 

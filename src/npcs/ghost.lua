@@ -1,6 +1,7 @@
 ---@diagnostic disable: duplicate-set-field
 local Config = require "config.config"
 local Template = require "src.npcs.template"
+local Animator = require "utils.animator"
 
 local Ghost = setmetatable({}, {__index = Template})
 Ghost.__index = Ghost
@@ -24,6 +25,12 @@ function Ghost:new()
     o.laneSwitchTimer = 0
     o.laneSwitchInterval = math.random(2, 4)
 
+    o.animator = Animator:new({
+        spriteSheet   = love.graphics.newImage("assets/npc/ghost-sheet.png"),
+        frameWidth    = 64,
+        frameHeight   = 128,
+    })
+
     if o.lane == 0 then
         o.y = ScreenHeight/2 - o.height/2 - Config.ChunkSize
     else
@@ -35,7 +42,8 @@ end
 
 
 function Ghost:update(dt)
-    
+    self.animator:update(dt)
+
     -- if about to collide into the player, stop fading and stay fully visible
     if self.x < self.bufferZone.x + self.bufferZone.width then
         self.fadeTimer = self.fadeDuration
@@ -60,10 +68,11 @@ function Ghost:update(dt)
     end
 end
 
+-- TODO: FIX FADE IN AND OUT 
 function Ghost:draw()
     local alpha = self.colliding and 1 or (self.fadeTimer / self.fadeDuration)
     love.graphics.setColor(1, 1, 1, alpha)
-    love.graphics.draw(self.image, self.x, self.y - self.offset)
+    self.animator:draw(self.x, self.y - self.offset, 0)
     love.graphics.setColor(1, 1, 1, 1) -- reset color
 end
 
