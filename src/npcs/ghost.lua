@@ -68,6 +68,7 @@ function Ghost:update(dt)
     end
 end
 
+-- TODO: FIX FADE IN AND OUT 
 function Ghost:draw()
     local alpha = self.colliding and 1 or (self.fadeTimer / self.fadeDuration)
     love.graphics.setColor(1, 1, 1, alpha)
